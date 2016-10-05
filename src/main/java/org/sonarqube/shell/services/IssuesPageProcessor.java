@@ -66,6 +66,6 @@ public class IssuesPageProcessor {
         if (end > page.getTotal()) {
             end = page.getTotal();
         }
-        consoleOut(String.format("Processing from %d to %d", start, end));
+        consoleOut(String.format("Processing range %d..%d from a total of %d", start, end, page.getTotal()));
     }
 }

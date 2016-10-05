@@ -95,4 +95,8 @@ public class SonarSession {
     public boolean isConnected() {
         return nonNull(rootContext);
     }
+
+    public String getActiveSession() {
+        return rootContext == null ? "disconnected" : rootContext.getUri().getHost();
+    }
 }

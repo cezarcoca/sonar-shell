@@ -38,10 +38,7 @@ public class ShellPromptProvider implements PromptProvider {
 
     @Override
     public String getPrompt() {
-        if (session.isConnected()) {
-            return "sonar-qube> ";
-        }
-        return "shell> ";
+        return session.getActiveSession() + "> ";
     }
 
     @Override
