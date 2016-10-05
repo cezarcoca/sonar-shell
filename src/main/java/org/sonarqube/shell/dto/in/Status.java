@@ -16,15 +16,24 @@
  *
  */
 
-package org.sonarqube.shell.console;
+package org.sonarqube.shell.dto.in;
 
-public class Out {
-    public static final void consoleOut(String message) {
-        System.out.println(message);
-    }
+import lombok.Getter;
+import lombok.ToString;
 
-    public static final void consoleOutAndThrowsException(String message) {
-        System.out.println(message);
-        throw new IllegalArgumentException(message);
-    }
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@Getter
+@ToString
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+public class Status {
+
+    @XmlElement(name = "status")
+    private String status;
+    @XmlElement(name = "version")
+    private String version;
 }

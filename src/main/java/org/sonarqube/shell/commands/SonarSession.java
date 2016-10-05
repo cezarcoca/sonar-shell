@@ -22,7 +22,7 @@ import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.logging.LoggingFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonarqube.shell.dto.Status;
+import org.sonarqube.shell.dto.in.Status;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.ProcessingException;
@@ -34,6 +34,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Map;
 import java.util.Optional;
 
 import static java.util.Objects.nonNull;
@@ -58,9 +59,9 @@ public class SonarSession {
             URI uri = new URL(protocol, host, port, "").toURI();
             consoleOut(String.format("Connecting to: %s", uri));
             rootContext = client.target(uri);
-            Optional<Status> status = get("api/system/status", Status.class);
-            if(status.isPresent()) {
-                consoleOut("Successfully connected to: " + rootContext.getUri().toString());
+            Optional<Status> status = get("api/system/status", Status.class, Optional.empty());
+            if (status.isPresent()) {
+                consoleOut("Successfully connected to: " + rootContext.getUri());
                 consoleOut("Server " + status.get().toString());
                 return;
             }
@@ -70,9 +71,15 @@ public class SonarSession {
         disconnect(Optional.of("Server connection failed"));
     }
 
-    <T> Optional<T> get(String path, Class<T> clazz) {
+    <T> Optional<T> get(String path, Class<T> clazz, Optional<Map<String, String>> params) {
         try {
-            return Optional.of(rootContext.path(path).request(MediaType.APPLICATION_JSON_TYPE).get(clazz));
+            WebTarget resource = rootContext.path(path);
+            if (params.isPresent()) {
+                for (Map.Entry<String, String> entry : params.get().entrySet()) {
+                    resource = resource.queryParam(entry.getKey(), entry.getValue());
+                }
+            }
+            return Optional.of(resource.request(MediaType.APPLICATION_JSON_TYPE).get(clazz));
         } catch (ProcessingException e) {
             LOGGER.error("Failed to get the resource {} and convert it to {}", path, clazz.getName());
         }
@@ -80,7 +87,8 @@ public class SonarSession {
     }
 
     void disconnect(Optional<String> message) {
-        consoleOut(message.orElse("Successfully disconnected from: " + rootContext.getUri().toString()));
+        consoleOut(message.orElse(
+            "Successfully disconnected from: " + rootContext.getUri()));
         rootContext = null;
     }
 

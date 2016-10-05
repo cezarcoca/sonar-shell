@@ -16,21 +16,32 @@
  *
  */
 
-package org.sonarqube.shell.dto;
+package org.sonarqube.shell.dto.in;
 
 import lombok.Getter;
 import lombok.ToString;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Collection;
 
 @Getter
 @ToString
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Status {
+public class IssuesPage {
 
-    private String status;
-    private String version;
+    @XmlElement(name = "total")
+    Integer total;
+    @XmlElement(name = "p")
+    Integer pageIndex;
+    @XmlElement(name = "ps")
+    Integer pageSize;
+
+    @XmlElement(name = "issues")
+    private Collection<Issue> issues;
+    @XmlElement(name = "components")
+    private Collection<Component> components;
 }

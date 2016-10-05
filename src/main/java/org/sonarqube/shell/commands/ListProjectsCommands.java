@@ -42,7 +42,7 @@ public class ListProjectsCommands implements CommandMarker {
         return session.isConnected();
     }
 
-    @CliCommand(value = LIST_PROJECTS, help = "Disconnects from the SonarQube server")
+    @CliCommand(value = LIST_PROJECTS, help = "Lists the projects published on the SonarQube")
     public void disconnect() {
         session.disconnect(Optional.empty());
     }

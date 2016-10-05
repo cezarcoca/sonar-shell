@@ -1,0 +1,13 @@
+{
+  "category": "maintainability",
+  "axes": [
+    {
+      "name": "complexity",
+      "rules": ["javascript:FunctionComplexity", "squid:MethodCyclomaticComplexity"]
+    },
+    {
+      "name": "readability",
+      "rules": ["javascript:NestedIfDepth"]
+    }
+  ]
+}

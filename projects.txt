@@ -1,0 +1,6 @@
+host:       sonarqube.com
+port:       443
+protocol:   https
+
+# projects keys
+net.java.openjdk:jdk9,closure:library,mysql

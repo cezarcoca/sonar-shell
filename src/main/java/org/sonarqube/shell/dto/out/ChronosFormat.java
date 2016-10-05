@@ -16,15 +16,9 @@
  *
  */
 
-package org.sonarqube.shell.console;
+package org.sonarqube.shell.dto.out;
 
-public class Out {
-    public static final void consoleOut(String message) {
-        System.out.println(message);
-    }
+public class ChronosFormat {
 
-    public static final void consoleOutAndThrowsException(String message) {
-        System.out.println(message);
-        throw new IllegalArgumentException(message);
-    }
+
 }

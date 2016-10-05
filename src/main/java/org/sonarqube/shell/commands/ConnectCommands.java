@@ -42,12 +42,11 @@ public class ConnectCommands implements CommandMarker {
         this.session = session;
     }
 
-    @CliAvailabilityIndicator({CONNECT})
-    public boolean isCommandAvailable() {
-        return !session.isConnected();
-    }
-
-    @CliCommand(value = CONNECT, help = "Connects to the SonarQube server")
+    @CliCommand(value = CONNECT, help = "Connects to the SonarQube server."
+        + "If this is not specified, attempts to connect to port 9000.\n"
+        + "\tEXAMPLE to connect to SonarQube:\n\n"
+        + "\tconnect --host sonarqube.com --port 443 --protocol https\n"
+    )
     public void connect(
         @CliOption(key = {"host"}, help = "Specifies the name of the host machine where the SonarQube is running. "
             + "If this is not specified, attempts to connect to a SonarQube process running on the localhost.",
@@ -55,8 +54,7 @@ public class ConnectCommands implements CommandMarker {
             specifiedDefaultValue = "localhost"
         )
         final String host,
-        @CliOption(key = {"port"}, help = "Specifies the port where the SonarQube is listening. "
-            + "If this is not specified, attempts to connect to port 9000.",
+        @CliOption(key = {"port"}, help = "Specifies the port where the SonarQube is listening.",
             unspecifiedDefaultValue = "9000",
             specifiedDefaultValue = "9000")
         final Integer port,
@@ -69,5 +67,10 @@ public class ConnectCommands implements CommandMarker {
         Integer sonarPort = Objects.isNull(port) ? 9000 : port;
         String sonarProtocol = Objects.isNull(protocol) || !SUPPORTED_PROTOCOLS.contains(protocol.toLowerCase()) ? "http" : protocol;
         session.connect(sonarHost, sonarPort, sonarProtocol);
+    }
+
+    @CliAvailabilityIndicator({CONNECT})
+    public boolean isCommandAvailable() {
+        return !session.isConnected();
     }
 }
