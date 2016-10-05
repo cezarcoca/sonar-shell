@@ -25,11 +25,7 @@ java -jar sonar-shell-1.0-RC.jar
 
 **Shell commands**
 
-<<<<<<< HEAD
 For assistance press or type `help` then hit ENTER. Type `help <command>` to read more about a specific command.
-=======
-For assistance press or type `help` then hit ENTER. Type `git <command>` to read more about a specific command.
->>>>>>> 36d417ff59035f13d0a2dad66c793e5062070c1f
 These are the common SonarQube shell commands used in various situations:
 
 `connect`
@@ -69,7 +65,3 @@ The profile file format is presented below:
   ]
 }
 ```
-<<<<<<< HEAD
-=======
- 
->>>>>>> 36d417ff59035f13d0a2dad66c793e5062070c1f
