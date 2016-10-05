@@ -1,0 +1,2 @@
+# sonar-shell
+SonarQube shell
