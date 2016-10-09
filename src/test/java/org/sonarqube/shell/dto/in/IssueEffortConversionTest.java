@@ -16,12 +16,13 @@
  *
  */
 
-package org.sonarqube.shell.dto.out;
+package org.sonarqube.shell.dto.in;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.sonarqube.shell.dto.in.Issue;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -30,13 +31,13 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 @RunWith(Parameterized.class)
-public class ChronosEntryValueConversionTest {
+public class IssueEffortConversionTest {
 
     @Parameterized.Parameter
     public String input;
     @Parameterized.Parameter(value = 1)
     public Integer expected;
-    private ChronosEntry sut;
+    private Issue sut;
 
     @Parameterized.Parameters(name = "Given value is {0} then the generated integer is {1}")
     public static Collection<Object[]> data() {
@@ -45,11 +46,11 @@ public class ChronosEntryValueConversionTest {
 
     @Before
     public void setUp() {
-        sut = new ChronosEntry();
+        sut = new Issue("rule", "severity", 1, input);
     }
 
     @Test
     public void test() {
-        assertThat(sut.getValue(input), is(expected));
+        assertThat(sut.getEffort(), is(expected));
     }
 }

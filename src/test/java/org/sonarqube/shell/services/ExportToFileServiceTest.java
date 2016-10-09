@@ -55,7 +55,7 @@ public class ExportToFileServiceTest {
     public void testShouldExportsTheResultsToTheDestFile() throws IOException {
         // arrange
         Collection<ChronosEntry> result =
-            asList(new ChronosEntry("file", "name", "category", "10min"));
+            asList(new ChronosEntry("file", "name", "category", 10));
         File dest = File.createTempFile("test", "tmp");
         dest.deleteOnExit();
         // act

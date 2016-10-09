@@ -39,7 +39,7 @@ public class JsonContext {
 
     public JsonContext() throws JAXBException {
         System.setProperty("javax.xml.bind.context.factory", "org.eclipse.persistence.jaxb.JAXBContextFactory");
-        Map<String, Object> properties = new HashMap<String, Object>();
+        Map<String, Object> properties = new HashMap<>();
         properties.put(MarshallerProperties.MEDIA_TYPE, MediaType.APPLICATION_JSON);
         properties.put(UnmarshallerProperties.JSON_INCLUDE_ROOT, false);
         properties.put(UnmarshallerProperties.MEDIA_TYPE, MediaType.APPLICATION_JSON);
@@ -58,8 +58,7 @@ public class JsonContext {
 
     public Unmarshaller getUnmarshaller() {
         try {
-            Unmarshaller unmarshaller = context.createUnmarshaller();
-            return unmarshaller;
+            return context.createUnmarshaller();
         } catch (JAXBException e) {
             throw new IllegalStateException("Bad configuration", e);
         }

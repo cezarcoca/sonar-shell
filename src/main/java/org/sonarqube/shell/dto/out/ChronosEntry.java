@@ -26,8 +26,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Getter
 @ToString
@@ -36,7 +34,6 @@ import java.util.regex.Pattern;
 @XmlType(propOrder = {"file", "name", "category", "value"})
 public class ChronosEntry {
 
-    private static final Pattern VALUE_PATTERN = Pattern.compile("^(\\d+).*$");
     @XmlElement(name = "file")
     private String file;
     @XmlElement(name = "name")
@@ -46,18 +43,10 @@ public class ChronosEntry {
     @XmlElement(name = "value")
     private Integer value;
 
-    public ChronosEntry(String file, String name, String category, String value) {
+    public ChronosEntry(String file, String name, String category, Integer value) {
         this.file = file;
         this.name = name;
         this.category = category;
-        this.value = getValue(value);
-    }
-
-    Integer getValue(String source) {
-        Matcher matcher = VALUE_PATTERN.matcher(source);
-        if (matcher.find()) {
-            return Integer.valueOf(matcher.group(1));
-        }
-        return 0;
+        this.value = value;
     }
 }

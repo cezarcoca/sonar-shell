@@ -19,11 +19,11 @@
 package org.sonarqube.shell.console;
 
 public class Out {
-    public static final void consoleOut(String message) {
+    public static void consoleOut(String message) {
         System.out.println(message);
     }
 
-    public static final void consoleOutAndThrowsException(String message) {
+    public static void consoleOutAndThrowsException(String message) {
         System.out.println(message);
         throw new IllegalArgumentException(message);
     }

@@ -19,6 +19,7 @@
 package org.sonarqube.shell.services;
 
 import org.sonarqube.shell.dto.conf.Profile;
+import org.sonarqube.shell.dto.in.Component;
 import org.sonarqube.shell.dto.in.Issue;
 import org.sonarqube.shell.dto.in.IssuesPage;
 import org.sonarqube.shell.dto.out.ChronosEntry;
@@ -31,8 +32,8 @@ import static org.sonarqube.shell.console.Out.consoleOut;
 public class IssuesPageProcessor {
 
     private final Collection<ChronosEntry> entries;
-    private Map<String, String> rulesMapping;
     private final Profile profile;
+    private Map<String, String> rulesMapping;
 
     public IssuesPageProcessor(Profile profile) {
         this.entries = new ArrayList<>();
@@ -42,22 +43,26 @@ public class IssuesPageProcessor {
 
     private void initRulesToAxeNameMapping(Profile profile) {
         rulesMapping = new HashMap<>();
-        profile.getAxes().stream()
-            .forEach(a -> a.getRules().forEach(r -> rulesMapping.put(r, a.getName())));
+        profile.getAxes().stream().forEach(a -> a.getRules().forEach(r -> rulesMapping.put(r, a.getName())));
     }
 
     public void processPage(IssuesPage page) {
         printInfo(page);
         Map<Integer, List<Issue>> issues =
-            page.getIssues().stream().collect(groupingBy(i -> i.getComponentId()));
-        page.getComponents().stream().filter(c -> c.getQualifier().equals("FIL")).forEach(c -> {
-            issues.get(c.getId()).stream().forEach(issue -> entries.add(
-                new ChronosEntry(c.getPath(), rulesMapping.get(issue.getRule()), profile.getCategory(), issue.getEffort())));
-        });
+            page.getIssues().stream().collect(groupingBy(Issue::getComponentId));
+        page.getComponents().stream()
+            .filter(c -> c.getQualifier().equals("FIL"))
+            .forEach(c -> entries.add(getChronosEntry(issues.get(c.getId()), c)));
     }
 
     public Collection<ChronosEntry> getEntries() {
         return Collections.unmodifiableCollection(entries);
+    }
+
+    private ChronosEntry getChronosEntry(List<Issue> issues, Component component) {
+        int total = issues.stream().mapToInt(Issue::getEffort).sum();
+        String rule = issues.get(0).getRule();
+        return new ChronosEntry(component.getPath(), rulesMapping.get(rule), profile.getCategory(), total);
     }
 
     private void printInfo(IssuesPage page) {

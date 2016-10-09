@@ -18,14 +18,20 @@
 
 package org.sonarqube.shell.dto.in;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
 import javax.xml.bind.annotation.XmlElement;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Getter
 @ToString
+@AllArgsConstructor
 public class Issue {
+
+    private static final Pattern VALUE_PATTERN = Pattern.compile("^(\\d+).*$");
 
     @XmlElement(name = "rule")
     private String rule;
@@ -35,4 +41,18 @@ public class Issue {
     private Integer componentId;
     @XmlElement(name = "effort")
     private String effort;
+
+
+    @SuppressWarnings("unused")
+    Issue() {
+        // default constructor used by MOXy
+    }
+
+    public Integer getEffort() {
+        Matcher matcher = VALUE_PATTERN.matcher(effort);
+        if (matcher.find()) {
+            return Integer.valueOf(matcher.group(1));
+        }
+        return 0;
+    }
 }
