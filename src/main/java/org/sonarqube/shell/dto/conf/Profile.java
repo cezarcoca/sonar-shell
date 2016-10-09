@@ -39,13 +39,13 @@ public class Profile {
     @XmlElement(name = "category")
     private String category;
     @XmlElement(name = "axes")
-    private List<Axe> axes;
+    private List<Axis> axes;
 
     public Profile() {
         this("", new ArrayList<>());
     }
 
-    public Profile(String category, List<Axe> axes) {
+    public Profile(String category, List<Axis> axes) {
         this.category = category;
         this.axes = axes;
     }

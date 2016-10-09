@@ -18,6 +18,7 @@
 
 package org.sonarqube.shell.dto.out;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -29,6 +30,7 @@ import javax.xml.bind.annotation.XmlType;
 
 @Getter
 @ToString
+@EqualsAndHashCode
 @NoArgsConstructor
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = {"file", "name", "category", "value"})

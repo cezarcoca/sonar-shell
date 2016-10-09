@@ -18,7 +18,9 @@
 
 package org.sonarqube.shell.dto.in;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -29,6 +31,8 @@ import java.util.Collection;
 
 @Getter
 @ToString
+@NoArgsConstructor //used by MOXy
+@AllArgsConstructor
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class IssuesPage {

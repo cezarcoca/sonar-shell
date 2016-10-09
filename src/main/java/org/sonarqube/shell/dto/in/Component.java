@@ -18,13 +18,17 @@
 
 package org.sonarqube.shell.dto.in;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.xml.bind.annotation.XmlElement;
 
 @Getter
 @ToString
+@NoArgsConstructor // used by MOXy
+@AllArgsConstructor
 public class Component {
 
     @XmlElement(name = "id")

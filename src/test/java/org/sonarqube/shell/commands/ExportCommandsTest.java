@@ -20,7 +20,7 @@ package org.sonarqube.shell.commands;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.sonarqube.shell.dto.conf.Axe;
+import org.sonarqube.shell.dto.conf.Axis;
 import org.sonarqube.shell.dto.conf.Profile;
 import org.sonarqube.shell.services.JsonContext;
 
@@ -59,7 +59,7 @@ public class ExportCommandsTest {
     @Test
     public void testValidProfilesAreSuccessfullyUnmarshalled() {
         // arrange
-        List<Axe> axes = asList(new Axe("complexity", asList("javascript:FunctionComplexity", "squid:MethodCyclomaticComplexity")), new Axe("readability", asList("javascript:NestedIfDepth")));
+        List<Axis> axes = asList(new Axis("complexity", asList("javascript:FunctionComplexity", "squid:MethodCyclomaticComplexity")), new Axis("readability", asList("javascript:NestedIfDepth")));
         Profile expected = new Profile("maintainability", axes);
         System.out.println(expected.getAllRules());
         // act

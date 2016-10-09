@@ -34,17 +34,17 @@ import static java.util.stream.Collectors.joining;
 @ToString
 @EqualsAndHashCode
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Axe {
+public class Axis {
     @XmlElement(name = "name")
     private String name;
     @XmlElement(name = "rules")
     private Collection<String> rules;
 
-    public Axe() {
+    public Axis() {
         this("", new ArrayList<>());
     }
 
-    public Axe(String name, Collection<String> rules) {
+    public Axis(String name, Collection<String> rules) {
         this.name = name;
         this.rules = rules;
     }

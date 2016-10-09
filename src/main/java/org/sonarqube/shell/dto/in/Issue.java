@@ -20,6 +20,7 @@ package org.sonarqube.shell.dto.in;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -28,6 +29,7 @@ import java.util.regex.Pattern;
 
 @Getter
 @ToString
+@NoArgsConstructor //used by MOXy
 @AllArgsConstructor
 public class Issue {
 
@@ -41,12 +43,6 @@ public class Issue {
     private Integer componentId;
     @XmlElement(name = "effort")
     private String effort;
-
-
-    @SuppressWarnings("unused")
-    Issue() {
-        // default constructor used by MOXy
-    }
 
     public Integer getEffort() {
         Matcher matcher = VALUE_PATTERN.matcher(effort);

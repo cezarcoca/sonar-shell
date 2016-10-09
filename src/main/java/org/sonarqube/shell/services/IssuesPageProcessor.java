@@ -27,6 +27,7 @@ import org.sonarqube.shell.dto.out.ChronosEntry;
 import java.util.*;
 
 import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
 import static org.sonarqube.shell.console.Out.consoleOut;
 
 public class IssuesPageProcessor {
@@ -52,17 +53,19 @@ public class IssuesPageProcessor {
             page.getIssues().stream().collect(groupingBy(Issue::getComponentId));
         page.getComponents().stream()
             .filter(c -> c.getQualifier().equals("FIL"))
-            .forEach(c -> entries.add(getChronosEntry(issues.get(c.getId()), c)));
+            .forEach(c -> entries.addAll(getChronosEntries(issues.get(c.getId()), c)));
     }
 
     public Collection<ChronosEntry> getEntries() {
         return Collections.unmodifiableCollection(entries);
     }
 
-    private ChronosEntry getChronosEntry(List<Issue> issues, Component component) {
-        int total = issues.stream().mapToInt(Issue::getEffort).sum();
-        String rule = issues.get(0).getRule();
-        return new ChronosEntry(component.getPath(), rulesMapping.get(rule), profile.getCategory(), total);
+    private List<ChronosEntry> getChronosEntries(List<Issue> issues, Component component) {
+        return issues.stream().collect(
+            groupingBy(i -> rulesMapping.get(i.getRule()))).entrySet().stream()
+            .map(e -> new ChronosEntry(component.getPath(), e.getKey(), profile.getCategory(),
+                e.getValue().stream().mapToInt(Issue::getEffort).sum()))
+            .collect(toList());
     }
 
     private void printInfo(IssuesPage page) {
