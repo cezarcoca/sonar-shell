@@ -22,9 +22,11 @@ import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.logging.LoggingFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sonarqube.shell.dto.in.QualityGates;
 import org.sonarqube.shell.dto.in.Status;
 import org.springframework.stereotype.Component;
 
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.ProcessingException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -38,6 +40,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static java.util.Objects.nonNull;
+import static java.util.Optional.empty;
 import static org.sonarqube.shell.console.Out.consoleOut;
 
 @Component
@@ -59,10 +62,15 @@ public class SonarSession {
             URI uri = new URL(protocol, host, port, "").toURI();
             consoleOut(String.format("Connecting to: %s", uri));
             rootContext = client.target(uri);
-            Optional<Status> status = get("api/system/status", Status.class, Optional.empty());
+            Optional<Status> status = get("api/system/status", Status.class, empty());
             if (status.isPresent()) {
                 consoleOut("Successfully connected to: " + rootContext.getUri());
                 consoleOut("Server " + status.get().toString());
+                return;
+            }
+            Optional<QualityGates> failover = get("api/qualitygates/list", QualityGates.class, empty());
+            if (failover.isPresent()) {
+                consoleOut("Successfully connected to: " + rootContext.getUri());
                 return;
             }
         } catch (URISyntaxException | MalformedURLException e) {
@@ -80,10 +88,10 @@ public class SonarSession {
                 }
             }
             return Optional.of(resource.request(MediaType.APPLICATION_JSON_TYPE).get(clazz));
-        } catch (ProcessingException e) {
+        } catch (ProcessingException | NotFoundException e) {
             LOGGER.error("Failed to get the resource {} and convert it to {}", path, clazz.getName());
         }
-        return Optional.empty();
+        return empty();
     }
 
     void disconnect(Optional<String> message) {
